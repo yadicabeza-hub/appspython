@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Serenity SPA - Tu oasis de relajación y bienestar. Ofrecemos masajes, tratamientos faciales y terapias de agua.">
+    <title>Serenity SPA | Relajación y Bienestar</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">Serenity<span>SPA</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="#services">Servicios</a></li>
+                <li><a href="#about">Nosotros</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Descubre tu Paz Interior</h1>
+                <p>Sumérgete en un oasis de tranquilidad con nuestros tratamientos exclusivos.</p>
+                <a href="#services" class="cta-btn">Ver Servicios</a>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <h2>Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">💆‍♀️</div>
+                    <h3>Masajes Relajantes</h3>
+                    <p>Libera la tensión acumulada con técnicas milenarias y aceites esenciales.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✨</div>
+                    <h3>Tratamientos Faciales</h3>
+                    <p>Rejuvenece tu piel con productos naturales y técnicas de vanguardia.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🌊</div>
+                    <h3>Terapias de Agua</h3>
+                    <p>Experimenta el poder curativo del agua en nuestras piscinas termales.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="about-content">
+                <h2>Acerca de Nosotros</h2>
+                <p>En Serenity SPA, creemos en la armonía entre cuerpo, mente y espíritu. Nuestro equipo de profesionales altamente calificados está dedicado a brindarte una experiencia inolvidable de relajación y bienestar.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Reserva tu Cita</h2>
+            <form id="contact-form" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="service">Servicio de Interés</label>
+                    <select id="service" name="service">
+                        <option value="masaje">Masajes Relajantes</option>
+                        <option value="facial">Tratamientos Faciales</option>
+                        <option value="agua">Terapias de Agua</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensaje Adicional</label>
+                    <textarea id="message" name="message" rows="4"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Enviar Solicitud</button>
+            </form>
+            <div id="form-status" class="form-status"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Serenity SPA. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
