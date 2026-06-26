@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Gestor de Proyectos{% endblock %}
+
+{% block content %}
+<section class="projects-header">
+    <h1>Gestor de Proyectos</h1>
+    <p>Rastrea el progreso de tus proyectos a través de las diferentes fases del SDLC.</p>
+</section>
+
+<section class="create-project glass-panel fade-in">
+    <h2>Nuevo Proyecto</h2>
+    <form action="{{ url_for('main.add_project') }}" method="POST" class="project-form">
+        <div class="form-group">
+            <label for="name">Nombre del Proyecto</label>
+            <input type="text" id="name" name="name" required placeholder="Ej: Sistema de Inventario MVC">
+        </div>
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" name="description" rows="3" placeholder="Breve descripción..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+    </form>
+</section>
+
+<section class="projects-list fade-in" style="animation-delay: 0.2s;">
+    <h2>Proyectos Activos</h2>
+    {% if projects %}
+        <div class="table-responsive">
+            <table class="projects-table">
+                <thead>
+                    <tr>
+                        <th>Proyecto</th>
+                        <th>Fase Actual</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <tr>
+                        <td>
+                            <strong>{{ project.name }}</strong>
+                            <div class="text-sm text-gray">{{ project.description }}</div>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('main.update_project', project_id=project.id) }}" method="POST" class="inline-form">
+                                <select name="phase_id" onchange="this.form.submit()" class="phase-select">
+                                    {% for phase in phases %}
+                                        <option value="{{ phase.id }}" {% if phase.id == project.current_phase_id %}selected{% endif %}>
+                                            {{ phase.order }}. {{ phase.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('main.delete_project', project_id=project.id) }}" method="POST" class="inline-form">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar proyecto?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-state">No hay proyectos creados aún. ¡Inicia uno nuevo!</p>
+    {% endif %}
+</section>
+{% endblock %}

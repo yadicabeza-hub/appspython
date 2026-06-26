@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Fases del SDLC - Inicio{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>El Ciclo de Vida del Desarrollo de Software (SDLC)</h1>
+    <p>Conoce el proceso estándar de la industria para diseñar, desarrollar y probar software de alta calidad.</p>
+</section>
+
+<section class="phases-grid">
+    {% for phase in phases %}
+    <div class="phase-card fade-in" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+        <div class="phase-number">{{ phase.order }}</div>
+        <h2>{{ phase.name }}</h2>
+        <p>{{ phase.description }}</p>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}
