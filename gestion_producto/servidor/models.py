@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-from database import Base
+from servidor.database import Base
 
 
 class Producto(Base):
