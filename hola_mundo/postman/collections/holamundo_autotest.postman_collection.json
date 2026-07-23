@@ -1,0 +1,57 @@
+{
+  "info": {
+    "name": "Holamundo API Autotests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "DB Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8001/api/db-status",
+          "protocol": "http",
+          "host": ["127","0","0","1"],
+          "port": "8001",
+          "path": ["api","db-status"]
+        }
+      }
+    },
+    {
+      "name": "List Usuarios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8001/api/usuarios",
+          "protocol": "http",
+          "host": ["127","0","0","1"],
+          "port": "8001",
+          "path": ["api","usuarios"]
+        }
+      }
+    },
+    {
+      "name": "Create Usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key":"Content-Type","value":"application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"usuario\": \"postman_test\",\n  \"correo\": \"postman@example.com\",\n  \"contrasena\": \"secret\"\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8001/api/usuarios",
+          "protocol": "http",
+          "host": ["127","0","0","1"],
+          "port": "8001",
+          "path": ["api","usuarios"]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - MyApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-hover: #4f46e5;
+            --danger: #ef4444;
+            --success: #10b981;
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border-color);
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .alert {
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-text a {
+            color: #818cf8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-text a:hover {
+            color: var(--text-primary);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h1>Bienvenido</h1>
+            <p>Ingresa tus datos para acceder al panel</p>
+        </div>
+
+        <div id="alert-box" class="alert"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" placeholder="Ej. juanito" required>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-submit">Entrar</button>
+        </form>
+
+        <div class="footer-text">
+            ¿No tienes cuenta? <a href="/registro">Regístrate aquí</a>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const alertBox = document.getElementById('alert-box');
+
+        // Check if already logged in
+        if (localStorage.getItem('usuarioSesion')) {
+            window.location.href = '/';
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const usuario = document.getElementById('usuario').value.trim();
+            const contrasena = document.getElementById('contrasena').value;
+
+            // Limpiar alertas
+            alertBox.style.display = 'none';
+            alertBox.className = 'alert';
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usuario, contrasena })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Ocurrió un error al iniciar sesión');
+                }
+
+                // Login exitoso
+                alertBox.textContent = '¡Login exitoso! Redirigiendo...';
+                alertBox.classList.add('alert-success');
+                alertBox.style.display = 'block';
+
+                // Guardar en sesión
+                localStorage.setItem('usuarioSesion', usuario);
+
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+
+            } catch (err) {
+                alertBox.textContent = err.message;
+                alertBox.classList.add('alert-danger');
+                alertBox.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

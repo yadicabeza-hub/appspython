@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - MyApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-success: #10b981;
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a.active {
+            color: var(--accent-primary);
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .welcome-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-card h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .welcome-card p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            color: #a5b4fc;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .grid-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .grid-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--accent-primary);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card-action {
+            margin-top: auto;
+            color: #818cf8;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-action:hover {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <span>⚡</span> MyApp
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">Inicio</a>
+            <a href="/usuarios">Usuarios</a>
+            <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="welcome-card">
+            <h1>¡Te damos la bienvenida!</h1>
+            <p>Has iniciado sesión correctamente. Aquí tienes acceso a la administración global de tu base de datos de usuarios.</p>
+            <div class="user-badge" id="user-display">Usuario: cargando...</div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="grid-card" onclick="window.location.href='/usuarios'">
+                <div class="card-icon">👥</div>
+                <div class="card-title">Gestión de Usuarios</div>
+                <div class="card-desc">Visualiza, edita, agrega y elimina usuarios en la base de datos de MySQL de forma sencilla.</div>
+                <a href="/usuarios" class="card-action">Ir a CRUD →</a>
+            </div>
+
+            <div class="grid-card" onclick="window.location.href='/docs'">
+                <div class="card-icon">📖</div>
+                <div class="card-title">Documentación API</div>
+                <div class="card-desc">Accede a Swagger OpenAPI para probar los endpoints del backend directamente en tiempo real.</div>
+                <a href="/docs" class="card-action">Ver Swagger →</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Check session
+        const usuarioSesion = localStorage.getItem('usuarioSesion');
+        if (!usuarioSesion) {
+            window.location.href = '/login';
+        } else {
+            document.getElementById('user-display').textContent = `Usuario: ${usuarioSesion}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('usuarioSesion');
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>
