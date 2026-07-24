@@ -6,12 +6,12 @@ if (gridJuegos) {
             const params = new URLSearchParams(window.location.search);
             const juegos = await apiFetch(`/videojuegos?${params.toString()}`);
             gridJuegos.innerHTML = '';
-            
+
             for (const j of juegos) {
                 // Obtener calificación promedio
                 const calif = await apiFetch(`/videojuegos/${j.id_videojuego}/calificacion`);
                 const portada = j.portada || 'https://via.placeholder.com/250x150';
-                
+
                 gridJuegos.innerHTML += `
                     <div class="card">
                         <img src="${portada}" class="card-img" alt="Portada">
@@ -36,7 +36,7 @@ const formPublicar = document.getElementById('formPublicar');
 if (formPublicar) {
     formPublicar.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const data = {
             titulo: document.getElementById('titulo').value,
             descripcion: document.getElementById('descripcion').value,
@@ -53,7 +53,7 @@ if (formPublicar) {
                 method: 'POST',
                 body: JSON.stringify(data)
             });
-            
+
             // Subir portada si existe
             const portadaInput = document.getElementById('portada');
             if (portadaInput.files.length > 0) {
@@ -64,7 +64,7 @@ if (formPublicar) {
                     body: fdPortada
                 });
             }
-            
+
             // Subir ZIP si existe
             const archivoInput = document.getElementById('archivo_juego');
             if (archivoInput.files.length > 0) {
@@ -75,7 +75,7 @@ if (formPublicar) {
                     body: fdArchivo
                 });
             }
-            
+
             mostrarMensaje('msgPublicar', 'Juego publicado exitosamente');
             setTimeout(() => { window.location.href = '/mis_juegos'; }, 2000);
         } catch (error) {
