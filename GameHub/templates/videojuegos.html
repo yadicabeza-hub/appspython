@@ -1,42 +1,86 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Catálogo - GameHub</title>
-    <link rel="stylesheet" href="/static/css/estilos.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div>
-            <a href="/" class="nav-brand">GameHub</a>
-            <a href="/videojuegos">Catálogo</a>
-        </div>
-        <div>
-            <a href="/perfil" class="req-auth hidden">Mi Perfil</a>
-            <a href="/mis_juegos" class="req-auth hidden">Mis Juegos</a>
-            <a href="#" onclick="cerrarSesion()" class="req-auth hidden">Cerrar Sesión</a>
-        </div>
-    </nav>
-    <div class="container">
-        <h2>Catálogo de Videojuegos</h2>
-        
-        <form style="margin-bottom: 2rem; display:flex; gap:1rem;" action="/videojuegos" method="GET">
-            <input type="text" name="titulo" class="form-control" placeholder="Buscar por título..." style="max-width:300px;">
-            <select name="genero" class="form-control" style="max-width:200px;">
-                <option value="">Cualquier Género</option>
-                <option value="Plataformas">Plataformas</option>
-                <option value="RPG">RPG</option>
-                <option value="Acción">Acción</option>
-                <option value="Puzzle">Puzzle</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Buscar</button>
-        </form>
+{% extends "base.html" %}
 
-        <div id="gridJuegos" class="grid-juegos">
-            <!-- Cargado por JS -->
+{% block title %}Explorar Videojuegos - GameHub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-header">
+        <div>
+            <h1>Explorar videojuegos</h1>
+            <p style="color:var(--color-text-secondary);">Encuentra proyectos independientes por género o título.</p>
         </div>
     </div>
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/videojuegos.js"></script>
-</body>
-</html>
+
+    <div class="catalog-layout">
+        <!-- Barra lateral de filtros -->
+        <aside class="filter-sidebar">
+            <form id="formFiltros" action="/videojuegos" method="GET">
+                <div class="filter-group">
+                    <label for="titulo">Buscar</label>
+                    <input type="text" name="titulo" id="titulo_filtro" class="form-control" placeholder="Título o palabra clave...">
+                </div>
+
+                <div class="filter-group">
+                    <label for="genero">Género</label>
+                    <select name="genero" id="genero_filtro" class="form-control">
+                        <option value="">Cualquier Género</option>
+                        <option value="Acción">Acción</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="RPG">RPG</option>
+                        <option value="Puzzle">Puzzle</option>
+                        <option value="Plataformas">Plataformas</option>
+                        <option value="Estrategia">Estrategia</option>
+                    </select>
+                </div>
+
+                <!-- Los selectores de plataforma y estado se agregan visualmente pero su funcionamiento depende de si el backend los soporta -->
+                <div class="filter-group">
+                    <label>Plataforma</label>
+                    <select name="plataforma" class="form-control">
+                        <option value="">Cualquiera</option>
+                        <option value="Windows">Windows</option>
+                        <option value="Web">Web</option>
+                        <option value="Linux">Linux</option>
+                        <option value="Mac">Mac</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;">Filtrar</button>
+                    <a href="/videojuegos" class="btn btn-outline" style="flex:1; text-align:center;">Limpiar</a>
+                </div>
+            </form>
+        </aside>
+
+        <!-- Contenido principal (Grilla) -->
+        <div class="catalog-content">
+            <!-- Estado de carga inicial -->
+            <div id="loadingCatalogo" class="loading-state hidden">
+                <div class="spinner"></div>
+                <p>Cargando videojuegos...</p>
+            </div>
+
+            <div id="gridJuegos" class="grid-juegos">
+                <!-- Cargado por JS -->
+            </div>
+            
+            <div id="emptyCatalogo" class="empty-state hidden">
+                <h3>No encontramos videojuegos</h3>
+                <p>Prueba cambiando los filtros o se el primero en publicar.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/videojuegos.js"></script>
+<script>
+    // Rellenar filtros actuales de la URL
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('titulo')) document.getElementById('titulo_filtro').value = params.get('titulo');
+        if (params.has('genero')) document.getElementById('genero_filtro').value = params.get('genero');
+    });
+</script>
+{% endblock %}

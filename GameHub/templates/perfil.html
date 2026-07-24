@@ -1,44 +1,43 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Mi Perfil - GameHub</title>
-    <link rel="stylesheet" href="/static/css/estilos.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div>
-            <a href="/" class="nav-brand">GameHub</a>
-            <a href="/videojuegos">Catálogo</a>
-        </div>
-        <div>
-            <a href="/perfil" class="req-auth hidden">Mi Perfil</a>
-            <a href="/mis_juegos" class="req-auth hidden">Mis Juegos</a>
-            <a href="#" onclick="cerrarSesion()" class="req-auth hidden">Cerrar Sesión</a>
-        </div>
-    </nav>
-    <div class="container" id="infoPerfil">
-        <div class="form-card" style="max-width:800px; display:flex; gap:2rem;">
-            <div>
-                <img id="fotoPerfil" src="https://via.placeholder.com/150" alt="Foto de Perfil" style="border-radius:50%; width:150px; height:150px; object-fit:cover;">
-            </div>
-            <div>
-                <h2 id="nombreCompleto">Cargando...</h2>
-                <h4 id="usernameDisplay" style="color:var(--primary-color);"></h4>
-                <p><strong>Tipo:</strong> <span id="tipo"></span> | <strong>País:</strong> <span id="pais"></span></p>
-                <p id="biografia"></p>
-                <div style="display:flex; gap: 1rem; margin-top: 1rem;">
-                    <button onclick="document.getElementById('fileFoto').click()" class="btn btn-primary">Cambiar Foto</button>
-                    <button onclick="document.getElementById('formEditarPerfil').classList.toggle('hidden')" class="btn btn-primary" style="background-color: var(--secondary-color);">Editar Datos</button>
-                </div>
-                <input type="file" id="fileFoto" style="display:none;" accept="image/*">
-            </div>
-        </div>
+{% extends "base.html" %}
 
-        <div id="formEditarPerfil" class="form-card hidden" style="max-width:800px; margin-top:1rem;">
-            <h3>Actualizar Información</h3>
-            <div id="msgPerfil"></div>
-            <form id="formUpdatePerfil">
+{% block title %}Mi Perfil - GameHub{% endblock %}
+
+{% block content %}
+<div class="container" id="infoPerfil">
+    <!-- Cabecera del Perfil -->
+    <div class="profile-header">
+        <div style="position:relative;">
+            <img id="fotoPerfil" class="profile-avatar" src="https://via.placeholder.com/150" alt="Foto de Perfil">
+            <button onclick="document.getElementById('fileFoto').click()" class="btn btn-outline" style="position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); background:var(--color-surface); font-size:11px; padding:4px 8px;">Cambiar foto</button>
+            <input type="file" id="fileFoto" class="hidden" accept="image/*">
+        </div>
+        
+        <div class="profile-info" style="flex-grow:1;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <h2 id="nombreCompleto">Cargando...</h2>
+                    <h4 id="usernameDisplay"></h4>
+                    <p style="font-size:14px; color:var(--color-text-secondary); margin-bottom:10px;">
+                        <span class="tag" style="background:var(--color-primary-soft); color:var(--color-primary-dark);"><span id="tipo"></span></span> 
+                        <span style="margin-left:10px;">🌍 <span id="pais"></span></span>
+                    </p>
+                    <p id="biografia" style="max-width:600px; font-size:14px; line-height:1.6;"></p>
+                </div>
+                
+                <div style="display:flex; gap: 10px;">
+                    <button onclick="document.getElementById('formEditarPerfil').classList.toggle('hidden')" class="btn btn-outline">Editar Perfil</button>
+                    <a href="/publicar_juego" class="btn btn-primary">Publicar juego</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario de Edición (Oculto por defecto) -->
+    <div id="formEditarPerfil" class="form-card hidden" style="margin-bottom:40px;">
+        <h3 style="margin-bottom:20px;">Actualizar Información</h3>
+        <div id="msgPerfil"></div>
+        <form id="formUpdatePerfil">
+            <div class="grid-juegos" style="grid-template-columns: 1fr 1fr; gap:15px;">
                 <div class="form-group">
                     <label>Nombre Completo</label>
                     <input type="text" id="edit_nombre" class="form-control">
@@ -47,29 +46,45 @@
                     <label>País</label>
                     <input type="text" id="edit_pais" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label>Biografía</label>
-                    <textarea id="edit_bio" class="form-control" rows="3"></textarea>
-                </div>
+            </div>
+            <div class="form-group">
+                <label>Biografía</label>
+                <textarea id="edit_bio" class="form-control" rows="4"></textarea>
+            </div>
+            <div style="text-align:right;">
+                <button type="button" onclick="document.getElementById('formEditarPerfil').classList.add('hidden')" class="btn btn-outline">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            </form>
-        </div>
-        <h3 style="margin-top:2rem;">Juegos Publicados</h3>
-        <ul id="listaMisJuegos"></ul>
+            </div>
+        </form>
     </div>
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/autenticacion.js"></script>
-    <script>
-        document.getElementById('fileFoto').addEventListener('change', async (e) => {
-            if (e.target.files.length > 0) {
-                const fd = new FormData();
-                fd.append('file', e.target.files[0]);
-                try {
-                    const res = await apiFetch('/perfiles/me/fotografia', { method: 'POST', body: fd });
-                    document.getElementById('fotoPerfil').src = res.fotografia;
-                } catch(error) { alert("Error: " + error.message); }
+
+    <!-- Juegos del Usuario -->
+    <div class="section-header">
+        <h3>Juegos Publicados por Mí</h3>
+    </div>
+    
+    <!-- Aquí se inyectarán los juegos en forma de lista o cuadrícula -->
+    <!-- El JS actual crea un <ul> pero podemos adaptarlo si el JS actual no tiene formato estricto -->
+    <ul id="listaMisJuegos" style="list-style:none; padding:0;"></ul>
+    <p style="font-size:14px; color:var(--color-text-secondary);"><a href="/mis_juegos" style="text-decoration:underline;">Ir al dashboard de Mis Juegos para administrarlos.</a></p>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/autenticacion.js"></script>
+<script>
+    document.getElementById('fileFoto').addEventListener('change', async (e) => {
+        if (e.target.files.length > 0) {
+            const fd = new FormData();
+            fd.append('file', e.target.files[0]);
+            try {
+                const res = await apiFetch('/perfiles/me/fotografia', { method: 'POST', body: fd });
+                document.getElementById('fotoPerfil').src = res.fotografia;
+            } catch(error) { 
+                alert("Error al cambiar la foto: " + error.message); 
             }
-        });
-    </script>
-</body>
-</html>
+        }
+    });
+</script>
+{% endblock %}

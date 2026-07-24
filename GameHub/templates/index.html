@@ -1,30 +1,101 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>GameHub - Inicio</title>
-    <link rel="stylesheet" href="/static/css/estilos.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div>
-            <a href="/" class="nav-brand">GameHub</a>
-            <a href="/videojuegos">Catálogo</a>
+{% extends "base.html" %}
+
+{% block title %}GameHub - Inicio{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="hero">
+        <h1>Descubre videojuegos independientes</h1>
+        <p>Explora proyectos creados por desarrolladores de la comunidad, comparte tus experiencias y publica tus propios videojuegos.</p>
+        <div class="hero-actions">
+            <a href="/videojuegos" class="btn btn-primary">Explorar videojuegos</a>
+            <a href="/publicar_juego" class="btn btn-outline req-auth hidden" style="color:white; border-color:white;">Publicar mi juego</a>
+            <a href="/login" class="btn btn-outline req-unauth" style="color:white; border-color:white;">Publicar mi juego</a>
         </div>
-        <div>
-            <a href="/login" class="req-unauth">Iniciar Sesión</a>
-            <a href="/registro" class="req-unauth">Registrarse</a>
-            
-            <a href="/perfil" class="req-auth hidden">Mi Perfil</a>
-            <a href="/mis_juegos" class="req-auth hidden">Mis Juegos</a>
-            <a href="#" onclick="cerrarSesion()" class="req-auth hidden">Cerrar Sesión</a>
-        </div>
-    </nav>
-    <div class="container">
-        <h1>Bienvenido a GameHub</h1>
-        <p>La mejor plataforma académica para publicar y reseñar videojuegos independientes.</p>
-        <a href="/videojuegos" class="btn btn-primary">Explorar Catálogo</a>
+    </section>
+
+    <!-- Juego destacado -->
+    <div class="section-header">
+        <h2>Juego Destacado</h2>
+        <a href="/videojuegos" class="btn btn-outline">Ver todos</a>
     </div>
-    <script src="/static/js/api.js"></script>
-</body>
-</html>
+    
+    <div id="juegoDestacadoContainer" class="game-detail" style="margin-bottom:40px; display:none;">
+        <div class="game-detail-content" style="grid-template-columns: 1fr 1fr; gap:20px; padding:20px;">
+            <div class="game-card-cover" style="border-radius:var(--radius-small);">
+                <img id="destacadoPortada" src="https://via.placeholder.com/600x300" alt="Portada Destacado">
+            </div>
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+                <h3 id="destacadoTitulo" style="font-size:24px;"></h3>
+                <p id="destacadoMeta" class="game-card-meta" style="font-size:14px; margin-bottom:15px;"></p>
+                <div class="game-card-tags" id="destacadoTags" style="margin-bottom:15px;"></div>
+                <p id="destacadoDesc" style="color:var(--color-text-secondary); margin-bottom:20px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;"></p>
+                <div>
+                    <a id="destacadoBtn" href="#" class="btn btn-primary">Ver juego</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="destacadoEmpty" class="empty-state">
+        <h3>No hay juegos destacados por el momento.</h3>
+        <p>Publica el primer videojuego en la plataforma.</p>
+    </div>
+
+    <!-- Explorar por género -->
+    <div class="section-header">
+        <h2>Explorar por género</h2>
+    </div>
+    <div class="grid-juegos" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin-bottom:40px;">
+        <a href="/videojuegos?genero=Acción" class="btn btn-outline" style="padding:15px; text-align:center;">Acción</a>
+        <a href="/videojuegos?genero=Aventura" class="btn btn-outline" style="padding:15px; text-align:center;">Aventura</a>
+        <a href="/videojuegos?genero=RPG" class="btn btn-outline" style="padding:15px; text-align:center;">RPG</a>
+        <a href="/videojuegos?genero=Puzzle" class="btn btn-outline" style="padding:15px; text-align:center;">Puzzle</a>
+        <a href="/videojuegos?genero=Plataformas" class="btn btn-outline" style="padding:15px; text-align:center;">Plataformas</a>
+        <a href="/videojuegos?genero=Estrategia" class="btn btn-outline" style="padding:15px; text-align:center;">Estrategia</a>
+    </div>
+
+    <!-- Invitación para desarrolladores -->
+    <section class="hero" style="background-image:none; background-color:var(--color-surface); color:var(--color-text); border:1px solid var(--color-border); margin-bottom:0;">
+        <h2 style="color:var(--color-text);">¿Creaste un videojuego?</h2>
+        <p style="color:var(--color-text-secondary);">Publica tu proyecto en GameHub y compártelo con la comunidad.</p>
+        <div class="hero-actions">
+            <a href="/publicar_juego" class="btn btn-primary req-auth hidden">Publicar videojuego</a>
+            <a href="/login" class="btn btn-primary req-unauth">Publicar videojuego</a>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Lógica para cargar un juego destacado en la portada
+    async function cargarDestacado() {
+        try {
+            const juegos = await apiFetch('/videojuegos?limit=1');
+            if (juegos && juegos.length > 0) {
+                const j = juegos[0];
+                document.getElementById('destacadoEmpty').style.display = 'none';
+                document.getElementById('juegoDestacadoContainer').style.display = 'block';
+                
+                document.getElementById('destacadoPortada').src = j.portada || 'https://via.placeholder.com/600x300';
+                document.getElementById('destacadoTitulo').textContent = j.titulo;
+                document.getElementById('destacadoMeta').textContent = `${j.genero} · ${j.plataforma}`;
+                
+                document.getElementById('destacadoTags').innerHTML = `
+                    <span class="tag">${j.genero}</span>
+                    <span class="tag">${j.plataforma}</span>
+                    <span class="status-badge">${j.estado}</span>
+                `;
+                
+                document.getElementById('destacadoDesc').textContent = j.descripcion || 'Sin descripción disponible.';
+                document.getElementById('destacadoBtn').href = `/detalle_juego?id=${j.id_videojuego}`;
+            }
+        } catch (error) {
+            console.error("Error cargando destacado", error);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', cargarDestacado);
+</script>
+{% endblock %}

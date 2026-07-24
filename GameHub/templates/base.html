@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GameHub{% endblock %}</title>
+    <!-- Usamos fuente Inter de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/estilos.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="navbar-wrapper">
+            <nav class="navbar">
+                <div class="nav-left">
+                    <a href="/" class="nav-brand">GameHub</a>
+                    <div class="secondary-nav">
+                        <a href="/videojuegos" class="nav-link">Explorar</a>
+                        <a href="/videojuegos?genero=Plataformas" class="nav-link">Categorías</a>
+                        <!-- Links adicionales como Nuevos y Mejor calificados pueden simularse con filtros -->
+                    </div>
+                </div>
+
+                <div class="nav-center">
+                    <form action="/videojuegos" method="GET" class="search-bar">
+                        <input type="text" name="titulo" placeholder="Buscar juegos, géneros o desarrolladores" aria-label="Buscar">
+                        <button type="submit" aria-label="Buscar">🔍</button>
+                    </form>
+                </div>
+
+                <div class="nav-right">
+                    <!-- Usuario no autenticado -->
+                    <div class="req-unauth nav-actions">
+                        <a href="/login" class="nav-link">Iniciar sesión</a>
+                        <a href="/registro" class="btn btn-outline">Registrarse</a>
+                    </div>
+                    
+                    <!-- Usuario autenticado -->
+                    <div class="req-auth hidden nav-actions">
+                        <a href="/publicar_juego" class="btn btn-primary btn-publish">Publicar juego</a>
+                        <a href="/perfil" class="nav-link">Mi perfil</a>
+                        <a href="/mis_juegos" class="nav-link">Mis juegos</a>
+                        <a href="#" onclick="cerrarSesion()" class="nav-link">Cerrar sesión</a>
+                    </div>
+                </div>
+            </nav>
+
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">GameHub</div>
+            <p>La plataforma para videojuegos independientes creados por la comunidad.</p>
+            <div class="footer-links">
+                <a href="/videojuegos">Explorar</a>
+                <a href="/login">Iniciar sesión</a>
+                <a href="/registro">Registrarse</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Globales -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/autenticacion.js"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

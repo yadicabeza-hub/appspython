@@ -1,50 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalle de Juego - GameHub</title>
-    <link rel="stylesheet" href="/static/css/estilos.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div>
-            <a href="/" class="nav-brand">GameHub</a>
-            <a href="/videojuegos">Catálogo</a>
-        </div>
-        <div>
-            <a href="/perfil" class="req-auth hidden">Mi Perfil</a>
-            <a href="/mis_juegos" class="req-auth hidden">Mis Juegos</a>
-            <a href="#" onclick="cerrarSesion()" class="req-auth hidden">Cerrar Sesión</a>
-        </div>
-    </nav>
-    <div class="container">
-        <div id="detalleJuego" class="form-card" style="max-width:1000px; margin-bottom:2rem;">
-            <!-- Cargado por JS -->
-        </div>
+{% extends "base.html" %}
 
-        <div style="max-width:1000px; margin:0 auto;">
-            <h3>Escribir una Reseña</h3>
-            <div id="msgResena"></div>
-            <form id="formResena" class="req-auth hidden" style="margin-bottom:2rem;">
+{% block title %}Detalle de Juego - GameHub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Contenedor inyectado por JS -->
+    <div id="detalleJuego">
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Cargando detalles del juego...</p>
+        </div>
+    </div>
+
+    <!-- Sección de Reseñas -->
+    <div class="review-section" style="margin-top:40px;">
+        <h3 style="margin-bottom:20px;">Reseñas de la Comunidad</h3>
+        <div id="msgResena"></div>
+
+        <div class="form-card req-auth hidden"
+            style="margin-bottom:30px; box-shadow:none; border:1px solid var(--color-border); max-width:100%;">
+            <h4 style="margin-bottom:15px;">Escribir una reseña</h4>
+            <form id="formResena">
                 <div class="form-group">
-                    <label>Calificación (1 a 5)</label>
-                    <input type="number" id="calificacion" class="form-control" min="1" max="5" required>
+                    <label>Calificación</label>
+                    <select id="calificacion" class="form-control" style="max-width:150px;" required>
+                        <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                        <option value="4">⭐⭐⭐⭐ (4)</option>
+                        <option value="3">⭐⭐⭐ (3)</option>
+                        <option value="2">⭐⭐ (2)</option>
+                        <option value="1">⭐ (1)</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Comentario</label>
-                    <textarea id="comentario" class="form-control" required rows="3"></textarea>
+                    <textarea id="comentario" class="form-control" required rows="3"
+                        placeholder="¿Qué te pareció este juego?"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Enviar Reseña</button>
+                <button type="submit" class="btn btn-primary">Publicar reseña</button>
             </form>
-            <p class="req-unauth">Debes <a href="/login">iniciar sesión</a> para dejar una reseña.</p>
+        </div>
 
-            <h3>Reseñas de la Comunidad</h3>
-            <div id="listaResenas">
-                <!-- Cargado por JS -->
-            </div>
+        <div class="req-unauth"
+            style="margin-bottom:30px; padding:20px; background:var(--color-surface); border-radius:var(--radius-medium); text-align:center; border:1px solid var(--color-border);">
+            <p>Debes <a href="/login">iniciar sesión</a> para dejar una reseña.</p>
+        </div>
+
+        <div id="listaResenas">
+            <!-- Cargado por JS -->
         </div>
     </div>
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/resenas.js"></script>
-</body>
-</html>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/resenas.js"></script>
+{% endblock %}

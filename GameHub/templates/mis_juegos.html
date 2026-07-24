@@ -1,61 +1,104 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Mis Juegos - GameHub</title>
-    <link rel="stylesheet" href="/static/css/estilos.css">
-</head>
-<body>
-    <nav class="navbar">
+{% extends "base.html" %}
+
+{% block title %}Mis Juegos - GameHub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="section-header">
         <div>
-            <a href="/" class="nav-brand">GameHub</a>
-            <a href="/videojuegos">Catálogo</a>
+            <h2>Dashboard de Creador</h2>
+            <p style="color:var(--color-text-secondary);">Administra tus videojuegos publicados.</p>
         </div>
-        <div>
-            <a href="/perfil" class="req-auth hidden">Mi Perfil</a>
-            <a href="/mis_juegos" class="req-auth hidden">Mis Juegos</a>
-            <a href="#" onclick="cerrarSesion()" class="req-auth hidden">Cerrar Sesión</a>
-        </div>
-    </nav>
-    <div class="container">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2>Mis Videojuegos Publicados</h2>
-            <a href="/publicar_juego" class="btn btn-primary">Publicar Nuevo Juego</a>
-        </div>
-        <div id="gridMisJuegos" class="grid-juegos" style="margin-top:2rem;"></div>
+        <a href="/publicar_juego" class="btn btn-primary">Publicar Nuevo Juego</a>
     </div>
-    <script src="/static/js/api.js"></script>
-    <script>
-        async function cargarMisJuegos() {
-            try {
-                const juegos = await apiFetch('/videojuegos/mis-publicaciones');
-                const cont = document.getElementById('gridMisJuegos');
-                cont.innerHTML = juegos.map(j => `
-                    <div class="card">
-                        <img src="${j.portada || 'https://via.placeholder.com/250x150'}" class="card-img">
-                        <div class="card-body">
-                            <h3>${j.titulo}</h3>
-                            <p>${j.estado} | ${j.plataforma}</p>
-                            <a href="/detalle_juego?id=${j.id_videojuego}" class="btn btn-primary" style="display:block; text-align:center;">Ver Detalles</a>
-                            <button onclick="eliminarJuego(${j.id_videojuego})" class="btn btn-danger" style="display:block; width:100%; margin-top:0.5rem;">Eliminar</button>
+    
+    <div id="loadingMisJuegos" class="loading-state hidden">
+        <div class="spinner"></div>
+        <p>Cargando tus proyectos...</p>
+    </div>
+
+    <div id="gridMisJuegos" class="grid-juegos">
+        <!-- Cargado por JS -->
+    </div>
+    
+    <div id="emptyMisJuegos" class="empty-state hidden">
+        <h3>Aún no has publicado ningún juego.</h3>
+        <p>¡Anímate a compartir tu primer proyecto con la comunidad!</p>
+        <a href="/publicar_juego" class="btn btn-primary" style="margin-top:15px;">Publicar ahora</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function cargarMisJuegos() {
+        const loading = document.getElementById('loadingMisJuegos');
+        const empty = document.getElementById('emptyMisJuegos');
+        const grid = document.getElementById('gridMisJuegos');
+        
+        loading.classList.remove('hidden');
+        empty.classList.add('hidden');
+        grid.innerHTML = '';
+        
+        try {
+            const juegos = await apiFetch('/videojuegos/mis-publicaciones');
+            
+            if (juegos.length === 0) {
+                loading.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            
+            grid.innerHTML = juegos.map(j => {
+                const portada = j.portada || 'https://via.placeholder.com/600x300';
+                
+                // Función simple para escapar
+                const escapeH = (str) => String(str || '').replace(/[&<>'"]/g, tag => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+                }[tag]));
+
+                return `
+                <article class="game-card">
+                    <div class="game-card-cover">
+                        <img src="${portada}" alt="Portada">
+                    </div>
+                    <div class="game-card-content">
+                        <div class="game-card-header" style="margin-bottom:5px;">
+                            <h3>${escapeH(j.titulo)}</h3>
+                            <span class="status-badge">${escapeH(j.estado)}</span>
+                        </div>
+                        <p class="game-card-meta" style="margin-bottom:15px;">
+                            ${escapeH(j.plataforma)}
+                        </p>
+                        
+                        <div class="game-card-footer" style="flex-direction:column; gap:10px; padding-top:15px; border-top:1px solid var(--color-background); margin-top:auto;">
+                            <a href="/detalle_juego?id=${j.id_videojuego}" class="btn btn-outline" style="width:100%; border-color:var(--color-primary); color:var(--color-primary);">Ver / Editar</a>
+                            <button onclick="eliminarJuego(${j.id_videojuego})" class="btn btn-danger" style="width:100%;">Eliminar</button>
                         </div>
                     </div>
-                `).join('');
-            } catch (error) {
-                console.error(error);
-            }
+                </article>
+                `;
+            }).join('');
+            
+            loading.classList.add('hidden');
+        } catch (error) {
+            console.error(error);
+            loading.classList.add('hidden');
+            grid.innerHTML = `<div class="error-state">Error al cargar los juegos.</div>`;
         }
+    }
 
-        async function eliminarJuego(id) {
-            if(!confirm("¿Estás seguro de eliminar este juego?")) return;
-            try {
-                await apiFetch(`/videojuegos/${id}`, { method: 'DELETE' });
-                alert("Juego eliminado");
-                cargarMisJuegos();
-            } catch (error) { alert(error.message); }
+    async function eliminarJuego(id) {
+        if(!confirm("¿Estás seguro de que deseas eliminar permanentemente este videojuego? Esta acción no se puede deshacer.")) return;
+        try {
+            await apiFetch(`/videojuegos/${id}`, { method: 'DELETE' });
+            alert("Videojuego eliminado correctamente.");
+            cargarMisJuegos();
+        } catch (error) { 
+            alert("Error: " + error.message); 
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', cargarMisJuegos);
-    </script>
-</body>
-</html>
+    document.addEventListener('DOMContentLoaded', cargarMisJuegos);
+</script>
+{% endblock %}
