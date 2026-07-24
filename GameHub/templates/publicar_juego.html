@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Publicar Juego - GameHub</title>
+    <link rel="stylesheet" href="/static/css/estilos.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">GameHub</a>
+    </nav>
+    <div class="container">
+        <div class="form-card" style="max-width:800px;">
+            <h2>Publicar Nuevo Videojuego</h2>
+            <div id="msgPublicar"></div>
+            <form id="formPublicar" enctype="multipart/form-data">
+                <div class="grid-juegos" style="grid-template-columns: 1fr 1fr;">
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" id="titulo" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Género</label>
+                        <input type="text" id="genero" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Plataforma</label>
+                        <input type="text" id="plataforma" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="estado" class="form-control">
+                            <option value="desarrollo">Desarrollo</option>
+                            <option value="demo">Demo</option>
+                            <option value="beta">Beta</option>
+                            <option value="terminado" selected>Terminado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Versión</label>
+                        <input type="text" id="version" class="form-control" value="1.0.0">
+                    </div>
+                    <div class="form-group">
+                        <label>Enlace de descarga externo (opcional)</label>
+                        <input type="url" id="enlace_descarga" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="descripcion" class="form-control" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Portada (Imagen)</label>
+                    <input type="file" id="portada" class="form-control" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Archivo del Juego (.zip o .rar)</label>
+                    <input type="file" id="archivo_juego" class="form-control" accept=".zip,.rar">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width:100%">Publicar Videojuego</button>
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/videojuegos.js"></script>
+</body>
+</html>

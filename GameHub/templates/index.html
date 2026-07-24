@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>GameHub - Inicio</title>
+    <link rel="stylesheet" href="/static/css/estilos.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+            <a href="/" class="nav-brand">GameHub</a>
+            <a href="/videojuegos">Catálogo</a>
+        </div>
+        <div>
+            <a href="/login" class="req-unauth">Iniciar Sesión</a>
+            <a href="/registro" class="req-unauth">Registrarse</a>
+            
+            <a href="/perfil" class="req-auth hidden">Mi Perfil</a>
+            <a href="/mis_juegos" class="req-auth hidden">Mis Juegos</a>
+            <a href="#" onclick="cerrarSesion()" class="req-auth hidden">Cerrar Sesión</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Bienvenido a GameHub</h1>
+        <p>La mejor plataforma académica para publicar y reseñar videojuegos independientes.</p>
+        <a href="/videojuegos" class="btn btn-primary">Explorar Catálogo</a>
+    </div>
+    <script src="/static/js/api.js"></script>
+</body>
+</html>

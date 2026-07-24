@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Perfil - GameHub</title>
+    <link rel="stylesheet" href="/static/css/estilos.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+            <a href="/" class="nav-brand">GameHub</a>
+            <a href="/videojuegos">Catálogo</a>
+        </div>
+        <div>
+            <a href="/perfil" class="req-auth hidden">Mi Perfil</a>
+            <a href="/mis_juegos" class="req-auth hidden">Mis Juegos</a>
+            <a href="#" onclick="cerrarSesion()" class="req-auth hidden">Cerrar Sesión</a>
+        </div>
+    </nav>
+    <div class="container" id="infoPerfil">
+        <div class="form-card" style="max-width:800px; display:flex; gap:2rem;">
+            <div>
+                <img id="fotoPerfil" src="https://via.placeholder.com/150" alt="Foto de Perfil" style="border-radius:50%; width:150px; height:150px; object-fit:cover;">
+            </div>
+            <div>
+                <h2 id="nombreCompleto">Cargando...</h2>
+                <h4 id="usernameDisplay" style="color:var(--primary-color);"></h4>
+                <p><strong>Tipo:</strong> <span id="tipo"></span> | <strong>País:</strong> <span id="pais"></span></p>
+                <p id="biografia"></p>
+                <button onclick="document.getElementById('fileFoto').click()" class="btn btn-primary">Cambiar Foto</button>
+                <input type="file" id="fileFoto" style="display:none;" accept="image/*">
+            </div>
+        </div>
+        <h3 style="margin-top:2rem;">Juegos Publicados</h3>
+        <ul id="listaMisJuegos"></ul>
+    </div>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/autenticacion.js"></script>
+    <script>
+        document.getElementById('fileFoto').addEventListener('change', async (e) => {
+            if (e.target.files.length > 0) {
+                const fd = new FormData();
+                fd.append('file', e.target.files[0]);
+                try {
+                    const res = await apiFetch('/perfiles/me/fotografia', { method: 'POST', body: fd });
+                    document.getElementById('fotoPerfil').src = res.fotografia;
+                } catch(error) { alert("Error: " + error.message); }
+            }
+        });
+    </script>
+</body>
+</html>
