@@ -1,8 +1,4 @@
-import pytest
-from fastapi.testclient import TestClient
-from .test_usuarios import client
-
-def test_no_puedes_resenar_tu_propio_juego():
+def test_no_puedes_resenar_tu_propio_juego(client):
     # Usuario A
     client.post("/api/auth/registro", json={"nombre_usuario": "userA", "correo": "A@test.com", "contrasena": "123456"})
     tokenA = client.post("/api/auth/login", data={"username": "userA", "password": "123456"}).json()["access_token"]

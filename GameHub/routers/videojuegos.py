@@ -14,7 +14,7 @@ router = APIRouter()
 UPLOAD_PORTADAS_DIR = "static/uploads/portadas"
 UPLOAD_JUEGOS_DIR = "static/uploads/videojuegos"
 
-@router.post("/", response_model=VideojuegoResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=VideojuegoResponse, status_code=status.HTTP_201_CREATED)
 def crear_videojuego(
     videojuego_in: VideojuegoCreate, 
     db: Session = Depends(get_db),
@@ -29,7 +29,7 @@ def crear_videojuego(
     db.refresh(nuevo_juego)
     return nuevo_juego
 
-@router.get("/", response_model=List[VideojuegoResponse])
+@router.get("", response_model=List[VideojuegoResponse])
 def listar_videojuegos(
     db: Session = Depends(get_db),
     titulo: Optional[str] = Query(None),

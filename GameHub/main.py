@@ -46,32 +46,32 @@ templates = Jinja2Templates(directory="templates")
 # Rutas del Frontend
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="index.html")
 
 @app.get("/login", response_class=HTMLResponse)
 def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="login.html")
 
 @app.get("/registro", response_class=HTMLResponse)
 def registro_page(request: Request):
-    return templates.TemplateResponse("registro.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="registro.html")
 
 @app.get("/perfil", response_class=HTMLResponse)
 def perfil_page(request: Request):
-    return templates.TemplateResponse("perfil.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="perfil.html")
 
 @app.get("/videojuegos", response_class=HTMLResponse)
 def videojuegos_page(request: Request):
-    return templates.TemplateResponse("videojuegos.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="videojuegos.html")
 
 @app.get("/mis_juegos", response_class=HTMLResponse)
 def mis_juegos_page(request: Request):
-    return templates.TemplateResponse("mis_juegos.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="mis_juegos.html")
 
 @app.get("/detalle_juego", response_class=HTMLResponse)
 def detalle_juego_page(request: Request):
-    return templates.TemplateResponse("detalle_juego.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="detalle_juego.html")
 
 @app.get("/publicar_juego", response_class=HTMLResponse)
 def publicar_juego_page(request: Request):
-    return templates.TemplateResponse("publicar_juego.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="publicar_juego.html")

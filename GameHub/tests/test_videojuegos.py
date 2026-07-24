@@ -1,8 +1,4 @@
-import pytest
-from fastapi.testclient import TestClient
-from .test_usuarios import client
-
-def test_publicar_videojuego():
+def test_publicar_videojuego(client):
     # 1. Registrar y loguear
     client.post("/api/auth/registro", json={"nombre_usuario": "dev", "correo": "dev@test.com", "contrasena": "123456"})
     resp_login = client.post("/api/auth/login", data={"username": "dev", "password": "123456"})
@@ -23,7 +19,7 @@ def test_publicar_videojuego():
     assert response.status_code == 201
     assert response.json()["titulo"] == "Mi Super Juego"
 
-def test_listar_videojuegos():
+def test_listar_videojuegos(client):
     response = client.get("/api/videojuegos")
     assert response.status_code == 200
     assert isinstance(response.json(), list)

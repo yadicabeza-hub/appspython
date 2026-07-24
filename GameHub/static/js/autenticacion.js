@@ -82,6 +82,32 @@ if (infoPerfil) {
                 document.getElementById('fotoPerfil').src = perfil.fotografia;
             }
             
+            // Llenar formulario de edición
+            const formUpdatePerfil = document.getElementById('formUpdatePerfil');
+            if(formUpdatePerfil) {
+                document.getElementById('edit_nombre').value = perfil.nombre_completo || '';
+                document.getElementById('edit_pais').value = perfil.pais || '';
+                document.getElementById('edit_bio').value = perfil.biografia || '';
+
+                formUpdatePerfil.onsubmit = async (e) => {
+                    e.preventDefault();
+                    try {
+                        await apiFetch('/perfiles/me', {
+                            method: 'PUT',
+                            body: JSON.stringify({
+                                nombre_completo: document.getElementById('edit_nombre').value,
+                                biografia: document.getElementById('edit_bio').value,
+                                pais: document.getElementById('edit_pais').value
+                            })
+                        });
+                        mostrarMensaje('msgPerfil', 'Perfil actualizado correctamente');
+                        setTimeout(() => window.location.reload(), 1500);
+                    } catch(error) {
+                        mostrarMensaje('msgPerfil', error.message, true);
+                    }
+                };
+            }
+            
             // Cargar juegos publicados
             const juegos = await apiFetch(`/perfiles/${user.id_usuario}/videojuegos`);
             const listaJuegos = document.getElementById('listaMisJuegos');
