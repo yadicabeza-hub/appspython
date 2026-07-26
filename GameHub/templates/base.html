@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/estilos.css">
+    {% block extra_css %}{% endblock %}
 </head>
+
 <body>
     <header class="site-header">
         <div class="navbar-wrapper">
@@ -18,34 +21,35 @@
                     <a href="/" class="nav-brand">GameHub</a>
                     <div class="secondary-nav">
                         <a href="/videojuegos" class="nav-link">Explorar</a>
-                        <a href="/videojuegos?genero=Plataformas" class="nav-link">Categorías</a>
+                        <a href="/categorias" class="nav-link">Categorías</a>
                         <!-- Links adicionales como Nuevos y Mejor calificados pueden simularse con filtros -->
-                    </div>
-                </div>
-
-                <div class="nav-center">
-                    <form action="/videojuegos" method="GET" class="search-bar">
-                        <input type="text" name="titulo" placeholder="Buscar juegos, géneros o desarrolladores" aria-label="Buscar">
-                        <button type="submit" aria-label="Buscar">🔍</button>
-                    </form>
-                </div>
-
-                <div class="nav-right">
-                    <!-- Usuario no autenticado -->
-                    <div class="req-unauth nav-actions">
-                        <a href="/login" class="nav-link">Iniciar sesión</a>
-                        <a href="/registro" class="btn btn-outline">Registrarse</a>
-                    </div>
-                    
-                    <!-- Usuario autenticado -->
-                    <div class="req-auth hidden nav-actions">
-                        <a href="/publicar_juego" class="btn btn-primary btn-publish">Publicar juego</a>
-                        <a href="/perfil" class="nav-link">Mi perfil</a>
-                        <a href="/mis_juegos" class="nav-link">Mis juegos</a>
-                        <a href="#" onclick="cerrarSesion()" class="nav-link">Cerrar sesión</a>
-                    </div>
-                </div>
             </nav>
+        </div>
+
+        <div class="nav-center">
+            <form action="/videojuegos" method="GET" class="search-bar">
+                <input type="text" name="titulo" placeholder="Buscar juegos, géneros o desarrolladores"
+                    aria-label="Buscar">
+                <button type="submit" aria-label="Buscar">🔍</button>
+            </form>
+        </div>
+
+        <div class="nav-right">
+            <!-- Usuario no autenticado -->
+            <div class="req-unauth nav-actions">
+                <a href="/login" class="nav-link">Iniciar sesión</a>
+                <a href="/registro" class="btn btn-outline">Registrarse</a>
+            </div>
+
+            <!-- Usuario autenticado -->
+            <div class="req-auth hidden nav-actions">
+                <a href="/publicar_juego" class="btn btn-primary btn-publish">Publicar juego</a>
+                <a href="/perfil" class="nav-link">Mi perfil</a>
+                <a href="/mis_juegos" class="nav-link">Mis juegos</a>
+                <a href="#" onclick="cerrarSesion()" class="nav-link">Cerrar sesión</a>
+            </div>
+        </div>
+        </nav>
 
         </div>
     </header>
@@ -73,4 +77,5 @@
     {% block scripts %}
     {% endblock %}
 </body>
+
 </html>

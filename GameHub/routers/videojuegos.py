@@ -44,7 +44,7 @@ def listar_videojuegos(
     if titulo:
         query = query.filter(Videojuego.titulo.ilike(f"%{titulo}%"))
     if genero:
-        query = query.filter(Videojuego.genero == genero)
+        query = query.filter(Videojuego.genero.ilike(genero))
     if plataforma:
         query = query.filter(Videojuego.plataforma == plataforma)
     if estado:

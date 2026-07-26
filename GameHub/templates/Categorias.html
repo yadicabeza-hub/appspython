@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Categorías | GameHub{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/categorias.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="categories-page">
+
+    <div class="categories-hero">
+        <span class="categories-label">Explorar por género</span>
+
+        <h1>Encuentra tu próximo videojuego</h1>
+
+        <p>
+            Explora videojuegos independientes organizados por categorías
+            y descubre nuevas experiencias.
+        </p>
+    </div>
+
+    <div class="categories-grid">
+
+        <a href="/videojuegos?genero=Acción" class="category-card category-action">
+
+            <div class="category-icon">⚔️</div>
+
+            <div class="category-info">
+                <h2>Acción</h2>
+                <p>Combates, velocidad y desafíos intensos.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=Aventura" class="category-card category-adventure">
+
+            <div class="category-icon">🗺️</div>
+
+            <div class="category-info">
+                <h2>Aventura</h2>
+                <p>Explora mundos, historias y escenarios increíbles.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=Arcade" class="category-card category-arcade">
+
+            <div class="category-icon">👾</div>
+
+            <div class="category-info">
+                <h2>Arcade</h2>
+                <p>Partidas rápidas con diversión clásica.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=Deportes" class="category-card category-sports">
+
+            <div class="category-icon">⚽</div>
+
+            <div class="category-info">
+                <h2>Deportes</h2>
+                <p>Compite y demuestra tus habilidades deportivas.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=Estrategia" class="category-card category-strategy">
+
+            <div class="category-icon">♟️</div>
+
+            <div class="category-info">
+                <h2>Estrategia</h2>
+                <p>Planifica cada movimiento y supera desafíos.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=Plataformas" class="category-card category-platform">
+
+            <div class="category-icon">🧱</div>
+
+            <div class="category-info">
+                <h2>Plataformas</h2>
+                <p>Supera niveles, obstáculos y enemigos.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=Puzzle" class="category-card category-puzzle">
+
+            <div class="category-icon">🧩</div>
+
+            <div class="category-info">
+                <h2>Puzzle</h2>
+                <p>Resuelve acertijos y desafíos mentales.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=RPG" class="category-card category-rpg">
+
+            <div class="category-icon">🧙</div>
+
+            <div class="category-info">
+                <h2>RPG</h2>
+                <p>Desarrolla personajes y vive grandes historias.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+        <a href="/videojuegos?genero=Simulación" class="category-card category-simulation">
+
+            <div class="category-icon">🎮</div>
+
+            <div class="category-info">
+                <h2>Simulación</h2>
+                <p>Experimenta actividades y mundos virtuales.</p>
+                <span>Explorar categoría →</span>
+            </div>
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

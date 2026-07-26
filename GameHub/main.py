@@ -74,4 +74,30 @@ def detalle_juego_page(request: Request):
 
 @app.get("/publicar_juego", response_class=HTMLResponse)
 def publicar_juego_page(request: Request):
-    return templates.TemplateResponse(request=request, name="publicar_juego.html")
+    return templates.TemplateResponse(
+        request=request,
+        name="publicar_juego.html"
+    )
+
+
+@app.get("/categorias", response_class=HTMLResponse)
+def categorias_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="categorias.html"
+    )
+    
+@app.get("/publicar_juego", response_class=HTMLResponse)
+def publicar_juego_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="publicar_juego.html"
+    )
+
+
+@app.get("/categorias", response_class=HTMLResponse)
+def categorias_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="categorias.html"
+    )

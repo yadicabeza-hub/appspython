@@ -8,10 +8,11 @@
         <h2 style="margin-bottom:20px;">Publicar Nuevo Videojuego</h2>
         <div id="msgPublicar"></div>
         <form id="formPublicar" enctype="multipart/form-data">
-            
+
             <!-- 1. Información Básica -->
             <div class="form-section">
-                <h3 style="border-bottom:1px solid var(--color-border); padding-bottom:10px; margin-bottom:15px;">1. Información Básica</h3>
+                <h3 style="border-bottom:1px solid var(--color-border); padding-bottom:10px; margin-bottom:15px;">1.
+                    Información Básica</h3>
                 <div class="grid-juegos" style="grid-template-columns: 1fr 1fr; gap:15px;">
                     <div class="form-group">
                         <label>Título del juego *</label>
@@ -43,39 +44,48 @@
 
             <!-- 2. Presentación -->
             <div class="form-section">
-                <h3 style="border-bottom:1px solid var(--color-border); padding-bottom:10px; margin-bottom:15px;">2. Presentación</h3>
+                <h3 style="border-bottom:1px solid var(--color-border); padding-bottom:10px; margin-bottom:15px;">2.
+                    Presentación</h3>
                 <div class="form-group">
                     <label>Descripción *</label>
-                    <textarea id="descripcion" class="form-control" rows="6" placeholder="Cuéntanos de qué trata tu juego..." required></textarea>
+                    <textarea id="descripcion" class="form-control" rows="6"
+                        placeholder="Cuéntanos de qué trata tu juego..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Portada (Imagen)</label>
                     <div class="file-dropzone" onclick="document.getElementById('portada').click()">
-                        <p style="color:var(--color-text-secondary); margin-bottom:10px;">Haz clic aquí para seleccionar una imagen</p>
+                        <p style="color:var(--color-text-secondary); margin-bottom:10px;">Haz clic aquí para seleccionar
+                            una imagen</p>
                         <input type="file" id="portada" class="form-control hidden" accept="image/*">
                         <img id="previewPortada" class="cover-preview hidden" alt="Vista previa de la portada">
                     </div>
-                    <p style="font-size:12px; color:var(--color-text-secondary);">Recomendado: 600x300px o proporción 16:9.</p>
+                    <p style="font-size:12px; color:var(--color-text-secondary);">Recomendado: 600x300px o proporción
+                        16:9.</p>
                 </div>
             </div>
 
             <!-- 3. Distribución -->
             <div class="form-section">
-                <h3 style="border-bottom:1px solid var(--color-border); padding-bottom:10px; margin-bottom:15px;">3. Distribución</h3>
+                <h3 style="border-bottom:1px solid var(--color-border); padding-bottom:10px; margin-bottom:15px;">3.
+                    Distribución</h3>
                 <div class="form-group">
                     <label>Archivo del Juego (.zip o .rar)</label>
-                    <input type="file" id="archivo_juego" class="form-control" accept=".zip,.rar" style="padding:10px; background:var(--color-background);">
-                    <p style="font-size:12px; color:var(--color-text-secondary); margin-top:5px;">Sube un archivo comprimido si quieres que los usuarios lo descarguen directamente.</p>
+                    <input type="file" id="archivo_juego" class="form-control" accept=".zip,.rar"
+                        style="padding:10px; background:var(--color-background);">
+                    <p style="font-size:12px; color:var(--color-text-secondary); margin-top:5px;">Sube un archivo
+                        comprimido si quieres que los usuarios lo descarguen directamente.</p>
                 </div>
                 <div class="form-group">
                     <label>Enlace externo (opcional)</label>
-                    <input type="url" id="enlace_descarga" class="form-control" placeholder="Ej. https://mitienda.com/juego">
+                    <input type="url" id="enlace_descarga" class="form-control"
+                        placeholder="Ej. https://mitienda.com/juego">
                 </div>
             </div>
-            
+
             <div style="display:flex; justify-content:space-between; margin-top:30px; align-items:center;">
                 <a href="/mis_juegos" class="btn btn-outline">Cancelar</a>
-                <button type="submit" class="btn btn-primary" style="padding:12px 30px; font-size:16px;">Publicar Videojuego</button>
+                <button type="submit" class="btn btn-primary" style="padding:12px 30px; font-size:16px;">Publicar
+                    Videojuego</button>
             </div>
         </form>
     </div>
