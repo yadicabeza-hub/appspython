@@ -1,10 +1,10 @@
-from fastapi import FastAPI, Depends,HTTPException
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from typing import List
-from database import engine, get_db
-imporservidor.database, schemas
-import crud
+from servidor.database import engine, get_db
+import servidor.models as models
+import servidor.schema as schemas
+import servidor.crud as crud
 
 # Crear la tabla en la base de datos
 models.Base.metadata.create_all(bind=engine)
