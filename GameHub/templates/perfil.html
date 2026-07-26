@@ -6,27 +6,30 @@
 <div class="container" id="infoPerfil">
     <!-- Cabecera del Perfil -->
     <div class="profile-header">
-        <div style="position:relative;">
-            <img id="fotoPerfil" class="profile-avatar" src="https://via.placeholder.com/150" alt="Foto de Perfil">
-            <button onclick="document.getElementById('fileFoto').click()" class="btn btn-outline" style="position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); background:var(--color-surface); font-size:11px; padding:4px 8px;">Cambiar foto</button>
-            <input type="file" id="fileFoto" class="hidden" accept="image/*">
-        </div>
-        
-        <div class="profile-info" style="flex-grow:1;">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
-                <div>
-                    <h2 id="nombreCompleto">Cargando...</h2>
-                    <h4 id="usernameDisplay"></h4>
-                    <p style="font-size:14px; color:var(--color-text-secondary); margin-bottom:10px;">
-                        <span class="tag" style="background:var(--color-primary-soft); color:var(--color-primary-dark);"><span id="tipo"></span></span> 
-                        <span style="margin-left:10px;">🌍 <span id="pais"></span></span>
-                    </p>
-                    <p id="biografia" style="max-width:600px; font-size:14px; line-height:1.6;"></p>
-                </div>
-                
-                <div style="display:flex; gap: 10px;">
-                    <button onclick="document.getElementById('formEditarPerfil').classList.toggle('hidden')" class="btn btn-outline">Editar Perfil</button>
-                    <a href="/publicar_juego" class="btn btn-primary">Publicar juego</a>
+        <div class="profile-cover"></div>
+        <div class="profile-content-wrapper">
+            <div style="position:relative; flex-shrink:0;">
+                <img id="fotoPerfil" class="profile-avatar" src="https://via.placeholder.com/150" alt="Foto de Perfil">
+                <button onclick="document.getElementById('fileFoto').click()" class="btn btn-outline" style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); background:var(--color-surface); font-size:11px; padding:4px 10px; border-radius: 12px; box-shadow: var(--shadow-small); z-index:2;">Cambiar</button>
+                <input type="file" id="fileFoto" class="hidden" accept="image/*">
+            </div>
+            
+            <div class="profile-info" style="flex-grow:1; padding-bottom: 15px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:15px;">
+                    <div>
+                        <h2 id="nombreCompleto">Cargando...</h2>
+                        <h4 id="usernameDisplay" style="margin-top:-3px;"></h4>
+                        <p style="font-size:14px; color:var(--color-text-secondary); margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+                            <span class="tag" style="background:var(--color-primary-soft); color:var(--color-primary-dark); font-weight:700;"><span id="tipo"></span></span> 
+                            <span>🌍 <span id="pais"></span></span>
+                        </p>
+                        <p id="biografia" style="max-width:600px; font-size:15px; line-height:1.6; margin-bottom:0; color:var(--color-text);"></p>
+                    </div>
+                    
+                    <div style="display:flex; gap: 10px;">
+                        <button onclick="document.getElementById('formEditarPerfil').classList.toggle('hidden')" class="btn btn-outline">Editar Perfil</button>
+                        <a href="/publicar_juego" class="btn btn-primary">Publicar juego</a>
+                    </div>
                 </div>
             </div>
         </div>

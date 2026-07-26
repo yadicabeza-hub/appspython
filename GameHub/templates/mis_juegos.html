@@ -4,12 +4,64 @@
 
 {% block content %}
 <div class="container">
-    <div class="section-header">
-        <div>
-            <h2>Dashboard de Creador</h2>
-            <p style="color:var(--color-text-secondary);">Administra tus videojuegos publicados.</p>
+    <div class="profile-header" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; margin-bottom: 40px;">
+        <div style="flex-grow:1;">
+            <h2 style="color: white; font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 5px;">Dashboard de Creador</h2>
+            <p style="color: #cbd5e1; font-size: 16px;">Administra tus videojuegos publicados y edita su información.</p>
         </div>
-        <a href="/publicar_juego" class="btn btn-primary">Publicar Nuevo Juego</a>
+        <div>
+            <a href="/publicar_juego" class="btn btn-primary" style="padding: 12px 24px; font-size: 16px; box-shadow: 0 4px 12px rgba(250,92,92,0.3);">+ Nuevo Proyecto</a>
+        </div>
+    </div>
+    
+    <!-- Modal de Edición -->
+    <div id="modalEditarJuego" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:2000; display:flex; justify-content:center; align-items:center; padding:20px; backdrop-filter: blur(4px);">
+        <div class="form-card" style="width:100%; max-width:600px; max-height:90vh; overflow-y:auto; position:relative; animation: slideUp 0.3s ease-out;">
+            <button type="button" onclick="cerrarModalEditar()" style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:28px; cursor:pointer; color:var(--color-text-secondary);">&times;</button>
+            <h2 style="margin-bottom:5px;">Editar Videojuego</h2>
+            <p style="color:var(--color-text-secondary); margin-bottom:20px; font-size: 14px;">Modifica los detalles básicos de tu proyecto.</p>
+            <div id="msgEditar"></div>
+            
+            <form id="formEditar">
+                <input type="hidden" id="edit_id">
+                
+                <div class="form-group">
+                    <label>Título *</label>
+                    <input type="text" id="edit_titulo" class="form-control" required>
+                </div>
+                
+                <div class="grid-juegos" style="grid-template-columns: 1fr 1fr; gap:15px;">
+                    <div class="form-group">
+                        <label>Género *</label>
+                        <input type="text" id="edit_genero" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Plataforma *</label>
+                        <input type="text" id="edit_plataforma" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select id="edit_estado" class="form-control">
+                        <option value="desarrollo">En desarrollo</option>
+                        <option value="demo">Demo</option>
+                        <option value="beta">Beta</option>
+                        <option value="terminado">Terminado / Lanzado</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción *</label>
+                    <textarea id="edit_descripcion" class="form-control" rows="5" required></textarea>
+                </div>
+                
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:25px;">
+                    <button type="button" onclick="cerrarModalEditar()" class="btn btn-outline">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
     
     <div id="loadingMisJuegos" class="loading-state hidden">
@@ -31,6 +83,8 @@
 
 {% block scripts %}
 <script>
+    let juegosActuales = [];
+
     async function cargarMisJuegos() {
         const loading = document.getElementById('loadingMisJuegos');
         const empty = document.getElementById('emptyMisJuegos');
@@ -42,6 +96,7 @@
         
         try {
             const juegos = await apiFetch('/videojuegos/mis-publicaciones');
+            juegosActuales = juegos; // Guardar en memoria para editar
             
             if (juegos.length === 0) {
                 loading.classList.add('hidden');
@@ -52,28 +107,30 @@
             grid.innerHTML = juegos.map(j => {
                 const portada = j.portada || 'https://via.placeholder.com/600x300';
                 
-                // Función simple para escapar
                 const escapeH = (str) => String(str || '').replace(/[&<>'"]/g, tag => ({
                     '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
                 }[tag]));
 
                 return `
-                <article class="game-card">
+                <article class="game-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
                     <div class="game-card-cover">
                         <img src="${portada}" alt="Portada">
                     </div>
                     <div class="game-card-content">
-                        <div class="game-card-header" style="margin-bottom:5px;">
-                            <h3>${escapeH(j.titulo)}</h3>
+                        <div class="game-card-header" style="margin-bottom:8px;">
+                            <h3 style="font-size: 18px; font-weight: 700;">${escapeH(j.titulo)}</h3>
                             <span class="status-badge">${escapeH(j.estado)}</span>
                         </div>
-                        <p class="game-card-meta" style="margin-bottom:15px;">
-                            ${escapeH(j.plataforma)}
+                        <p class="game-card-meta" style="margin-bottom:15px; font-size: 13px;">
+                            ${escapeH(j.genero)} · ${escapeH(j.plataforma)}
                         </p>
                         
-                        <div class="game-card-footer" style="flex-direction:column; gap:10px; padding-top:15px; border-top:1px solid var(--color-background); margin-top:auto;">
-                            <a href="/detalle_juego?id=${j.id_videojuego}" class="btn btn-outline" style="width:100%; border-color:var(--color-primary); color:var(--color-primary);">Ver / Editar</a>
-                            <button onclick="eliminarJuego(${j.id_videojuego})" class="btn btn-danger" style="width:100%;">Eliminar</button>
+                        <div class="game-card-footer" style="flex-direction:column; gap:8px; padding-top:15px; border-top:1px solid #f0f0f0; margin-top:auto;">
+                            <div style="display:flex; gap:8px; width:100%;">
+                                <button onclick="abrirModalEditar(${j.id_videojuego})" class="btn btn-outline" style="flex:1; border-color:var(--color-primary); color:var(--color-primary); font-size: 13px;">Editar Info</button>
+                                <a href="/detalle_juego?id=${j.id_videojuego}" class="btn btn-outline" style="flex:1; font-size: 13px;">Ver Juego</a>
+                            </div>
+                            <button onclick="eliminarJuego(${j.id_videojuego})" class="btn btn-danger" style="width:100%; font-size: 13px;">Eliminar Proyecto</button>
                         </div>
                     </div>
                 </article>
@@ -88,14 +145,66 @@
         }
     }
 
+    function abrirModalEditar(id) {
+        const juego = juegosActuales.find(j => j.id_videojuego === id);
+        if(!juego) return;
+        
+        document.getElementById('edit_id').value = juego.id_videojuego;
+        document.getElementById('edit_titulo').value = juego.titulo;
+        document.getElementById('edit_genero').value = juego.genero;
+        document.getElementById('edit_plataforma').value = juego.plataforma;
+        document.getElementById('edit_estado').value = juego.estado;
+        document.getElementById('edit_descripcion').value = juego.descripcion;
+        
+        document.getElementById('msgEditar').innerHTML = '';
+        document.getElementById('modalEditarJuego').classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Evitar scroll del body
+    }
+    
+    function cerrarModalEditar() {
+        document.getElementById('modalEditarJuego').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+    
+    document.getElementById('formEditar').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit_id').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+        const oldText = btn.textContent;
+        btn.textContent = 'Guardando...';
+        btn.disabled = true;
+
+        const body = {
+            titulo: document.getElementById('edit_titulo').value,
+            genero: document.getElementById('edit_genero').value,
+            plataforma: document.getElementById('edit_plataforma').value,
+            estado: document.getElementById('edit_estado').value,
+            descripcion: document.getElementById('edit_descripcion').value
+        };
+        
+        try {
+            await apiFetch(`/videojuegos/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(body),
+                headers: {'Content-Type': 'application/json'}
+            });
+            cerrarModalEditar();
+            cargarMisJuegos(); // Recargar para mostrar los cambios
+        } catch(err) {
+            document.getElementById('msgEditar').innerHTML = `<div class="alert alert-danger">${err.message}</div>`;
+        } finally {
+            btn.textContent = oldText;
+            btn.disabled = false;
+        }
+    });
+
     async function eliminarJuego(id) {
         if(!confirm("¿Estás seguro de que deseas eliminar permanentemente este videojuego? Esta acción no se puede deshacer.")) return;
         try {
             await apiFetch(`/videojuegos/${id}`, { method: 'DELETE' });
-            alert("Videojuego eliminado correctamente.");
             cargarMisJuegos();
         } catch (error) { 
-            alert("Error: " + error.message); 
+            alert("Error al eliminar: " + error.message); 
         }
     }
 
