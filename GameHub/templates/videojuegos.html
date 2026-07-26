@@ -12,46 +12,6 @@
     </div>
 
     <div class="catalog-layout">
-        <!-- Barra lateral de filtros -->
-        <aside class="filter-sidebar">
-            <form id="formFiltros" action="/videojuegos" method="GET">
-                <div class="filter-group">
-                    <label for="titulo">Buscar</label>
-                    <input type="text" name="titulo" id="titulo_filtro" class="form-control" placeholder="Título o palabra clave...">
-                </div>
-
-                <div class="filter-group">
-                    <label for="genero">Género</label>
-                    <select name="genero" id="genero_filtro" class="form-control">
-                        <option value="">Cualquier Género</option>
-                        <option value="Acción">Acción</option>
-                        <option value="Aventura">Aventura</option>
-                        <option value="RPG">RPG</option>
-                        <option value="Puzzle">Puzzle</option>
-                        <option value="Plataformas">Plataformas</option>
-                        <option value="Estrategia">Estrategia</option>
-                    </select>
-                </div>
-
-                <!-- Los selectores de plataforma y estado se agregan visualmente pero su funcionamiento depende de si el backend los soporta -->
-                <div class="filter-group">
-                    <label>Plataforma</label>
-                    <select name="plataforma" class="form-control">
-                        <option value="">Cualquiera</option>
-                        <option value="Windows">Windows</option>
-                        <option value="Web">Web</option>
-                        <option value="Linux">Linux</option>
-                        <option value="Mac">Mac</option>
-                    </select>
-                </div>
-
-                <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button type="submit" class="btn btn-primary" style="flex:1;">Filtrar</button>
-                    <a href="/videojuegos" class="btn btn-outline" style="flex:1; text-align:center;">Limpiar</a>
-                </div>
-            </form>
-        </aside>
-
         <!-- Contenido principal (Grilla) -->
         <div class="catalog-content">
             <!-- Estado de carga inicial -->
@@ -75,12 +35,4 @@
 
 {% block scripts %}
 <script src="/static/js/videojuegos.js"></script>
-<script>
-    // Rellenar filtros actuales de la URL
-    document.addEventListener('DOMContentLoaded', () => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('titulo')) document.getElementById('titulo_filtro').value = params.get('titulo');
-        if (params.has('genero')) document.getElementById('genero_filtro').value = params.get('genero');
-    });
-</script>
 {% endblock %}
